@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DiaTrack - Diabetes Monitoring</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            D
+        </div>
+
+        <div>
+            <h1>DiaTrack</h1>
+            <span>Health Monitoring</span>
+        </div>
+
+    </div>
+
+
+    <nav class="sidebar-nav">
+
+        <a
+            href="#dashboard"
+            class="nav-item active"
+        >
+            <span class="nav-icon">⌂</span>
+            Dashboard
+        </a>
+
+        <a
+            href="#patient-section"
+            class="nav-item"
+        >
+            <span class="nav-icon">◉</span>
+            Patients
+        </a>
+
+        <a
+            href="#analytics-section"
+            class="nav-item"
+        >
+            <span class="nav-icon">◈</span>
+            Analytics
+        </a>
+
+        <a
+            href="#medication-section"
+            class="nav-item"
+        >
+            <span class="nav-icon">✚</span>
+            Medications
+        </a>
+
+        <a
+            href="#appointment-section"
+            class="nav-item"
+        >
+            <span class="nav-icon">□</span>
+            Appointments
+        </a>
+
+    </nav>
+
+
+    <div class="sidebar-footer">
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <div>
+                <strong>System Online</strong>
+                <small>MySQL connected</small>
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN AREA
+===================================================== -->
+
+<main
+    class="main-content"
+    id="dashboard"
+>
+
+
+    <!-- =================================================
+         TOP BAR
+    ================================================== -->
+
+    <header class="topbar">
+
+        <div>
+
+            <p class="page-label">
+                DIABETES MANAGEMENT
+            </p>
+
+            <h2>
+                Patient Dashboard
+            </h2>
+
+        </div>
+
+
+        <div class="topbar-right">
+
+            <div class="last-updated">
+
+                <span>●</span>
+
+                <div>
+
+                    <small>
+                        Last updated
+                    </small>
+
+                    <strong id="lastUpdated">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="patient-selector-top">
+
+                <label for="patientSelect">
+                    Patient
+                </label>
+
+                <select id="patientSelect">
+
+                    <option value="">
+                        Loading patients...
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =================================================
+         PATIENT ACTION BAR
+    ================================================== -->
+
+    <section class="action-bar">
+
+        <div>
+
+            <span class="eyebrow">
+                CURRENT PATIENT
+            </span>
+
+            <h3 id="currentPatientName">
+                Select a patient
+            </h3>
+
+            <p>
+                Monitor glucose levels, medications and appointments.
+            </p>
+
+        </div>
+
+
+        <div class="patient-actions">
+
+            <button
+                class="btn-primary"
+                id="addPatientButton"
+                type="button"
+            >
+                + Add Patient
+            </button>
+
+            <button
+                class="btn-danger"
+                id="deletePatientButton"
+                type="button"
+            >
+                Delete Patient
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SUMMARY CARDS
+    ================================================== -->
+
+    <section class="summary-grid">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon teal">
+                AVG
+            </div>
+
+            <div class="stat-content">
+
+                <span class="stat-title">
+                    Average Glucose
+                </span>
+
+                <div class="stat-number-row">
+
+                    <span
+                        class="stat-value"
+                        id="averageGlucose"
+                    >
+                        -
+                    </span>
+
+                    <span class="stat-unit">
+                        mg/dL
+                    </span>
+
+                </div>
+
+                <span class="stat-description">
+                    Overall average
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon orange">
+                ↑
+            </div>
+
+            <div class="stat-content">
+
+                <span class="stat-title">
+                    Highest Reading
+                </span>
+
+                <div class="stat-number-row">
+
+                    <span
+                        class="stat-value"
+                        id="highestGlucose"
+                    >
+                        -
+                    </span>
+
+                    <span class="stat-unit">
+                        mg/dL
+                    </span>
+
+                </div>
+
+                <span class="stat-description">
+                    Maximum recorded
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon blue">
+                ↓
+            </div>
+
+            <div class="stat-content">
+
+                <span class="stat-title">
+                    Lowest Reading
+                </span>
+
+                <div class="stat-number-row">
+
+                    <span
+                        class="stat-value"
+                        id="lowestGlucose"
+                    >
+                        -
+                    </span>
+
+                    <span class="stat-unit">
+                        mg/dL
+                    </span>
+
+                </div>
+
+                <span class="stat-description">
+                    Minimum recorded
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon purple">
+                #
+            </div>
+
+            <div class="stat-content">
+
+                <span class="stat-title">
+                    Total Readings
+                </span>
+
+                <div class="stat-number-row">
+
+                    <span
+                        class="stat-value"
+                        id="totalReadings"
+                    >
+                        -
+                    </span>
+
+                </div>
+
+                <span class="stat-description">
+                    Measurements stored
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         CHART + LATEST READING
+    ================================================== -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- GLUCOSE CHART -->
+
+        <div class="card chart-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        GLUCOSE MONITORING
+                    </span>
+
+                    <h2>
+                        Glucose Trend
+                    </h2>
+
+                    <p>
+                        Patient glucose readings over time
+                    </p>
+
+                </div>
+
+
+                <div class="chart-legend">
+
+                    <span class="legend-line"></span>
+
+                    <span>
+                        Glucose
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="chart-container">
+
+                <canvas id="glucoseChart"></canvas>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- LATEST READING -->
+
+        <div class="card latest-card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        MOST RECENT
+                    </span>
+
+                    <h2>
+                        Latest Reading
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="latest-reading-box">
+
+                <div class="latest-number">
+
+                    <span id="latestGlucose">
+                        -
+                    </span>
+
+                    <small>
+                        mg/dL
+                    </small>
+
+                </div>
+
+
+                <span
+                    id="glucoseStatus"
+                    class="glucose-status"
+                >
+                    No data
+                </span>
+
+            </div>
+
+
+            <div class="latest-details">
+
+                <div>
+
+                    <span>
+                        Measurement
+                    </span>
+
+                    <strong id="latestMeasurement">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        Date & Time
+                    </span>
+
+                    <strong id="latestDate">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="demo-note">
+
+                <strong>Demo indicator:</strong>
+
+                Status labels are for project demonstration
+                and are not medical diagnoses.
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         PATIENT + ANALYTICS
+    ================================================== -->
+
+    <section
+        class="dashboard-grid"
+        id="patient-section"
+    >
+
+
+        <!-- PATIENT PROFILE -->
+
+        <div class="card">
+
+            <div class="card-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        PATIENT PROFILE
+                    </span>
+
+                    <h2>
+                        Patient Information
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="patientInfo"
+                class="patient-profile"
+            >
+
+                Select a patient.
+
+            </div>
+
+        </div>
+
+
+
+        <!-- GLUCOSE ANALYSIS -->
+
+        <div
+            class="card"
+            id="analytics-section"
+        >
+
+            <div class="card-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        ANALYTICS
+                    </span>
+
+                    <h2>
+                        Glucose Analysis
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="analysis-grid">
+
+
+                <div class="analysis-item">
+
+                    <span>
+                        Fasting Average
+                    </span>
+
+                    <strong id="fastingAverage">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="analysis-item">
+
+                    <span>
+                        Post Lunch Average
+                    </span>
+
+                    <strong id="postLunchAverage">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="analysis-item">
+
+                    <span>
+                        Post Dinner Average
+                    </span>
+
+                    <strong id="postDinnerAverage">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="analysis-item">
+
+                    <span>
+                        Standard Deviation
+                    </span>
+
+                    <strong id="standardDeviation">
+                        -
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         GLUCOSE HISTORY
+    ================================================== -->
+
+    <section class="card">
+
+
+        <div class="card-heading">
+
+            <div>
+
+                <span class="eyebrow">
+                    HISTORY
+                </span>
+
+                <h2>
+                    Recent Glucose Readings
+                </h2>
+
+                <p>
+                    Latest measurements recorded for this patient
+                </p>
+
+            </div>
+
+
+            <span class="record-count">
+                Database records
+            </span>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Date & Time
+                        </th>
+
+                        <th>
+                            Glucose
+                        </th>
+
+                        <th>
+                            Measurement Type
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="glucoseTableBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         MEDICATIONS + APPOINTMENTS
+    ================================================== -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- =================================================
+             MEDICATIONS
+        ================================================== -->
+
+        <div
+            class="card"
+            id="medication-section"
+        >
+
+            <div class="card-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        TREATMENT
+                    </span>
+
+                    <h2>
+                        Medications
+                    </h2>
+
+                    <p>
+                        Current medications for the selected patient.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-primary"
+                    id="addMedicationButton"
+                >
+                    + Add Medication
+                </button>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Medication
+                            </th>
+
+                            <th>
+                                Dosage
+                            </th>
+
+                            <th>
+                                Frequency
+                            </th>
+
+                            <th>
+                                Start Date
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="medicationTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             APPOINTMENTS
+        ================================================== -->
+
+        <div
+            class="card"
+            id="appointment-section"
+        >
+
+            <div class="card-heading">
+
+                <div>
+
+                    <span class="eyebrow">
+                        SCHEDULE
+                    </span>
+
+                    <h2>
+                        Appointments
+                    </h2>
+
+                    <p>
+                        Scheduled appointments for the selected patient.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="btn-primary"
+                    id="addAppointmentButton"
+                >
+                    + Add Appointment
+                </button>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date & Time
+                            </th>
+
+                            <th>
+                                Doctor
+                            </th>
+
+                            <th>
+                                Type
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="appointmentTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         ADD GLUCOSE
+    ================================================== -->
+
+    <section class="card add-reading-card">
+
+
+        <div class="card-heading">
+
+            <div>
+
+                <span class="eyebrow">
+                    DATA ENTRY
+                </span>
+
+                <h2>
+                    Add Glucose Reading
+                </h2>
+
+                <p>
+                    Add a new measurement for the selected patient.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form id="glucoseForm">
+
+
+            <div class="form-group">
+
+                <label for="glucoseLevel">
+                    Glucose Level
+                </label>
+
+                <input
+                    type="number"
+                    id="glucoseLevel"
+                    required
+                    min="1"
+                    placeholder="e.g. 125"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="measurementType">
+                    Measurement Type
+                </label>
+
+                <select
+                    id="measurementType"
+                    required
+                >
+
+                    <option value="Fasting">
+                        Fasting
+                    </option>
+
+                    <option value="Post Lunch">
+                        Post Lunch
+                    </option>
+
+                    <option value="Post Dinner">
+                        Post Dinner
+                    </option>
+
+                    <option value="Random">
+                        Random
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <button
+                type="submit"
+                class="btn-primary"
+            >
+                + Add Reading
+            </button>
+
+
+        </form>
+
+
+        <p id="formMessage"></p>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     ADD PATIENT MODAL
+===================================================== -->
+
+<div
+    id="patientModal"
+    class="modal hidden"
+>
+
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    PATIENT MANAGEMENT
+                </span>
+
+                <h2>
+                    Add New Patient
+                </h2>
+
+            </div>
+
+
+            <button
+                id="closeModalButton"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+
+        <form id="patientForm">
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="firstName">
+                        First Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="firstName"
+                        required
+                        placeholder="First name"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="lastName">
+                        Last Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="lastName"
+                        required
+                        placeholder="Last name"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="dateOfBirth">
+                        Date of Birth
+                    </label>
+
+                    <input
+                        type="date"
+                        id="dateOfBirth"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="gender">
+                        Gender
+                    </label>
+
+                    <select id="gender">
+
+                        <option value="">
+                            Select
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone
+                    </label>
+
+                    <input
+                        type="text"
+                        id="phone"
+                        placeholder="Phone number"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Email address"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="diagnosisDate">
+                    Diagnosis Date
+                </label>
+
+                <input
+                    type="date"
+                    id="diagnosisDate"
+                >
+
+            </div>
+
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    id="cancelModalButton"
+                    class="btn-secondary"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Add Patient
+                </button>
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     ADD MEDICATION MODAL
+===================================================== -->
+
+<div
+    id="medicationModal"
+    class="modal hidden"
+>
+
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    TREATMENT MANAGEMENT
+                </span>
+
+                <h2>
+                    Add Medication
+                </h2>
+
+            </div>
+
+
+            <button
+                id="closeMedicationModalButton"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+
+        <form id="medicationForm">
+
+
+            <div class="form-group">
+
+                <label for="medicationName">
+                    Medication Name
+                </label>
+
+                <input
+                    type="text"
+                    id="medicationName"
+                    required
+                    placeholder="e.g. Metformin"
+                >
+
+            </div>
+
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="medicationDosage">
+                        Dosage
+                    </label>
+
+                    <input
+                        type="text"
+                        id="medicationDosage"
+                        placeholder="e.g. 500 mg"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="medicationFrequency">
+                        Frequency
+                    </label>
+
+                    <input
+                        type="text"
+                        id="medicationFrequency"
+                        placeholder="e.g. Twice daily"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="medicationStartDate">
+                        Start Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="medicationStartDate"
+                    >
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label for="medicationEndDate">
+                        End Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="medicationEndDate"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    id="cancelMedicationButton"
+                    class="btn-secondary"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Add Medication
+                </button>
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     ADD APPOINTMENT MODAL
+===================================================== -->
+
+<div
+    id="appointmentModal"
+    class="modal hidden"
+>
+
+
+    <div class="modal-content">
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    APPOINTMENT MANAGEMENT
+                </span>
+
+                <h2>
+                    Add Appointment
+                </h2>
+
+            </div>
+
+
+            <button
+                id="closeAppointmentModalButton"
+                class="close-button"
+                type="button"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+
+        <form id="appointmentForm">
+
+
+            <div class="form-group">
+
+                <label for="appointmentDate">
+                    Appointment Date & Time
+                </label>
+
+                <input
+                    type="datetime-local"
+                    id="appointmentDate"
+                    required
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="doctorName">
+                    Doctor Name
+                </label>
+
+                <input
+                    type="text"
+                    id="doctorName"
+                    required
+                    placeholder="e.g. Dr. Mehta"
+                >
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="appointmentType">
+                    Appointment Type
+                </label>
+
+                <select
+                    id="appointmentType"
+                    required
+                >
+
+                    <option value="">
+                        Select appointment type
+                    </option>
+
+                    <option value="Routine Checkup">
+                        Routine Checkup
+                    </option>
+
+                    <option value="Follow-up">
+                        Follow-up
+                    </option>
+
+                    <option value="Consultation">
+                        Consultation
+                    </option>
+
+                    <option value="Lab Review">
+                        Lab Review
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="appointmentNotes">
+                    Notes
+                </label>
+
+                <textarea
+                    id="appointmentNotes"
+                    rows="4"
+                    placeholder="Optional appointment notes"
+                ></textarea>
+
+            </div>
+
+
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    id="cancelAppointmentButton"
+                    class="btn-secondary"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Add Appointment
+                </button>
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="app.js"></script>
+
+
+</body>
+
+</html>
